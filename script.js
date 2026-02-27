@@ -49,22 +49,35 @@ const finalSummary = document.getElementById('final-summary');
 
 // Initialize
 function init() {
+    console.log('Initializing application...');
+    console.log('TRIP_DATABASE ready with', TRIP_DATABASE.length, 'trips.');
+
+    const originField = document.getElementById('origin');
+    const destField = document.getElementById('destination');
+    const dateField = document.getElementById('travel-date');
+
     const origin = 'Londrina, PR';
     const dest = 'São Paulo, SP';
     const date = new Date().toISOString().split('T')[0];
 
-    document.getElementById('origin').value = origin;
-    document.getElementById('destination').value = dest;
-    document.getElementById('travel-date').value = date;
+    if (originField) originField.value = origin;
+    if (destField) destField.value = dest;
+    if (dateField) dateField.value = date;
 
-    document.getElementById('results-title').innerText = `${origin} para ${dest}`;
-    document.getElementById('results-date').innerText = new Date(date).toLocaleDateString('pt-BR');
+    const resultsTitle = document.getElementById('results-title');
+    const resultsDate = document.getElementById('results-date');
+
+    if (resultsTitle) resultsTitle.innerText = `${origin} para ${dest}`;
+    if (resultsDate) resultsDate.innerText = new Date(date).toLocaleDateString('pt-BR');
 
     // Pick initial 5 random trips
     shuffleAndPickTrips();
+    console.log('Trips picked:', currentResults.length);
     renderTrips();
+    console.log('Application initialized.');
 }
-init();
+
+window.addEventListener('DOMContentLoaded', init);
 
 // Event Listeners
 searchForm.addEventListener('submit', (e) => {
