@@ -169,7 +169,7 @@ function updateFinalSummary() {
 }
 
 function renderTrips() {
-    tripsContainer.innerHTML = MOCK_TRIPS.map(trip => `
+    tripsContainer.innerHTML = currentResults.map(trip => `
         <div class="card trip-card p-3 p-md-4">
             <div class="row align-items-center">
                 <div class="col-md-3 text-center mb-3 mb-md-0">
