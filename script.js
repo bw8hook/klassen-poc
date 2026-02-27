@@ -1,16 +1,37 @@
 // Data definitions
-const MOCK_TRIPS = [
-    { id: 1, operator: 'Viação Garcia', logo: 'assets/garcia.png', type: 'Semi-Leito', departure: '08:30', arrival: '13:00', duration: '4h 30m', price: 124.90, seatsLeft: 12 },
-    { id: 2, operator: 'Brasil Sul', logo: 'assets/brasilsul.png', type: 'Leito Total', departure: '10:15', arrival: '14:45', duration: '4h 30m', price: 189.50, seatsLeft: 4 },
-    { id: 3, operator: 'Catarinense', logo: 'assets/catarinense.png', type: 'Convencional', departure: '13:00', arrival: '17:30', duration: '4h 30m', price: 85.00, seatsLeft: 22 },
-    { id: 4, operator: 'Viação Garcia', logo: 'assets/garcia.png', type: 'Leito', departure: '15:30', arrival: '20:00', duration: '4h 30m', price: 159.90, seatsLeft: 8 },
-    { id: 5, operator: 'Brasil Sul', logo: 'assets/brasilsul.png', type: 'Semi-Leito', departure: '18:45', arrival: '23:15', duration: '4h 30m', price: 129.00, seatsLeft: 15 },
-    { id: 6, operator: 'Catarinense', logo: 'assets/catarinense.png', type: 'Leito Total', departure: '22:15', arrival: '02:45', duration: '4h 30m', price: 195.00, seatsLeft: 3 }
+const OPERATORS = [
+    { name: 'Viação Garcia', logo: 'assets/garcia.png' },
+    { name: 'Brasil Sul', logo: 'assets/brasilsul.png' },
+    { name: 'Catarinense', logo: 'assets/catarinense.png' }
 ];
+
+const TYPES = ['Convencional', 'Semi-Leito', 'Leito', 'Leito Total'];
+
+// Generate 24 trips (database)
+const TRIP_DATABASE = Array.from({ length: 24 }).map((_, i) => {
+    const operator = OPERATORS[i % OPERATORS.length];
+    const departureHour = Math.floor(i / 1.5) + 6; // Spread across the day
+    const departureMin = (i % 2) * 30;
+    const hourStr = departureHour.toString().padStart(2, '0');
+    const minStr = departureMin.toString().padStart(2, '0');
+
+    return {
+        id: i + 1,
+        operator: operator.name,
+        logo: operator.logo,
+        type: TYPES[Math.floor(Math.random() * TYPES.length)],
+        departure: `${hourStr}:${minStr}`,
+        arrival: `${(departureHour + 4).toString().padStart(2, '0')}:${minStr}`,
+        duration: '4h 30m',
+        price: 80 + (Math.random() * 120),
+        seatsLeft: Math.floor(Math.random() * 40) + 1
+    };
+});
 
 // State
 let selectedTrip = null;
 let selectedSeats = [];
+let currentResults = [];
 
 // DOM Elements
 const searchForm = document.getElementById('search-form');
@@ -39,6 +60,8 @@ function init() {
     document.getElementById('results-title').innerText = `${origin} para ${dest}`;
     document.getElementById('results-date').innerText = new Date(date).toLocaleDateString('pt-BR');
 
+    // Pick initial 5 random trips
+    shuffleAndPickTrips();
     renderTrips();
 }
 init();
@@ -53,8 +76,17 @@ searchForm.addEventListener('submit', (e) => {
     document.getElementById('results-title').innerText = `${origin} para ${dest}`;
     document.getElementById('results-date').innerText = new Date(date).toLocaleDateString('pt-BR');
 
+    shuffleAndPickTrips();
     showResultsView();
 });
+
+function shuffleAndPickTrips() {
+    // Shuffle database and take first 5
+    currentResults = [...TRIP_DATABASE]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 5)
+        .sort((a, b) => a.departure.localeCompare(b.departure)); // Sort by time for better UX
+}
 
 continuePassengersBtn.addEventListener('click', showPassengersView);
 
@@ -74,13 +106,12 @@ function showResultsView() {
 }
 
 function showSeatsView(tripId) {
-    selectedTrip = MOCK_TRIPS.find(t => t.id === tripId);
+    selectedTrip = TRIP_DATABASE.find(t => t.id === tripId);
     selectedSeats = [];
 
     resultsView.style.display = 'none';
     passengersView.style.display = 'none';
     seatsView.style.display = 'block';
-    seatsView.classList.add('fade-in');
 
     renderSeats();
     updateSummary();
