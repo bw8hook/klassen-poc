@@ -25,7 +25,6 @@ const passengersView = document.getElementById('view-passengers');
 const passengerFormsContainer = document.getElementById('passenger-forms-container');
 const passengerForm = document.getElementById('passenger-form');
 const finalSummary = document.getElementById('final-summary');
-const checkoutBtn = document.getElementById('btn-checkout');
 
 // Initialize
 function init() {
@@ -61,8 +60,8 @@ continuePassengersBtn.addEventListener('click', showPassengersView);
 
 passengerForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    alert('Ação de reserva simulada.');
-    location.reload();
+    const modal = new bootstrap.Modal(document.getElementById('checkoutModal'));
+    modal.show();
 });
 
 function showResultsView() {
@@ -108,12 +107,21 @@ function renderPassengerForms() {
                     <input type="text" class="form-control" name="name_${seatId}" required>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label small">CPF/Documento</label>
-                    <input type="text" class="form-control" name="doc_${seatId}" required>
+                    <label class="form-label small">CPF</label>
+                    <input type="text" class="form-control cpf-mask" name="doc_${seatId}" placeholder="000.000.000-00" required>
                 </div>
             </div>
         </div>
     `).join('');
+
+    // Initialize masks for all new inputs
+    document.querySelectorAll('.cpf-mask').forEach(input => {
+        new Cleave(input, {
+            delimiters: ['.', '.', '-'],
+            blocks: [3, 3, 3, 2],
+            numericOnly: true
+        });
+    });
 }
 
 function updateFinalSummary() {
@@ -202,7 +210,7 @@ function updateSummary() {
     if (selectedSeats.length === 0) {
         summaryContainer.innerHTML = '<p class="text-muted small">Nenhuma poltrona selecionada</p>';
         totalPriceEl.innerText = 'R$ 0,00';
-        checkoutBtn.classList.add('d-none');
+        continuePassengersBtn.classList.add('d-none');
     } else {
         const total = selectedSeats.length * selectedTrip.price;
         summaryContainer.innerHTML = `
@@ -215,11 +223,8 @@ function updateSummary() {
             </div>
         `;
         totalPriceEl.innerText = `R$ ${total.toFixed(2)}`;
-        checkoutBtn.classList.remove('d-none');
+        continuePassengersBtn.classList.remove('d-none');
     }
 }
 
-checkoutBtn.addEventListener('click', () => {
-    alert('Ação de reserva simulada.');
-    location.reload();
-});
+// Final logic handled in passengerForm submit listener
