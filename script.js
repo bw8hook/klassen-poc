@@ -20,6 +20,11 @@ const tripsContainer = document.getElementById('trips-container');
 const seatGrid = document.getElementById('seat-grid');
 const summaryContainer = document.getElementById('selection-summary');
 const totalPriceEl = document.getElementById('total-price');
+const continuePassengersBtn = document.getElementById('btn-continue-passengers');
+const passengersView = document.getElementById('view-passengers');
+const passengerFormsContainer = document.getElementById('passenger-forms-container');
+const passengerForm = document.getElementById('passenger-form');
+const finalSummary = document.getElementById('final-summary');
 const checkoutBtn = document.getElementById('btn-checkout');
 
 // Initialize
@@ -52,8 +57,17 @@ searchForm.addEventListener('submit', (e) => {
     showResultsView();
 });
 
+continuePassengersBtn.addEventListener('click', showPassengersView);
+
+passengerForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Ação de reserva simulada.');
+    location.reload();
+});
+
 function showResultsView() {
     seatsView.style.display = 'none';
+    passengersView.style.display = 'none';
     resultsView.style.display = 'block';
 
     renderTrips();
@@ -65,12 +79,54 @@ function showSeatsView(tripId) {
     selectedSeats = [];
 
     resultsView.style.display = 'none';
+    passengersView.style.display = 'none';
     seatsView.style.display = 'block';
     seatsView.classList.add('fade-in');
 
     renderSeats();
     updateSummary();
     window.scrollTo({ top: seatsView.offsetTop - 50, behavior: 'smooth' });
+}
+
+function showPassengersView() {
+    seatsView.style.display = 'none';
+    resultsView.style.display = 'none';
+    passengersView.style.display = 'block';
+
+    renderPassengerForms();
+    updateFinalSummary();
+    window.scrollTo({ top: passengersView.offsetTop - 50, behavior: 'smooth' });
+}
+
+function renderPassengerForms() {
+    passengerFormsContainer.innerHTML = selectedSeats.map((seatId, index) => `
+        <div class="wf-box p-3 mb-3">
+            <h6 class="fw-bold mb-3">Passageiro ${index + 1} (Assento ${seatId})</h6>
+            <div class="row g-3">
+                <div class="col-md-8">
+                    <label class="form-label small">Nome Completo</label>
+                    <input type="text" class="form-control" name="name_${seatId}" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label small">CPF/Documento</label>
+                    <input type="text" class="form-control" name="doc_${seatId}" required>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function updateFinalSummary() {
+    const total = selectedSeats.length * selectedTrip.price;
+    finalSummary.innerHTML = `
+        <div class="small">
+            <p class="mb-1"><strong>Trecho:</strong> ${selectedTrip.departure} → ${selectedTrip.arrival}</p>
+            <p class="mb-1"><strong>Empresa:</strong> ${selectedTrip.operator}</p>
+            <p class="mb-1"><strong>Assentos:</strong> ${selectedSeats.join(', ')}</p>
+            <hr>
+            <p class="fs-5 fw-bold text-end">Total: R$ ${total.toFixed(2)}</p>
+        </div>
+    `;
 }
 
 function renderTrips() {
