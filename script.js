@@ -1,9 +1,9 @@
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const OPERATORS = [
-    { name: 'Viação Garcia', logo: '/garcia.png' },
-    { name: 'Brasil Sul', logo: '/brasilsul.png' },
-    { name: 'Catarinense', logo: '/catarinense.png' }
+    { name: 'Viação Garcia', logo: 'assets/garcia.png' },
+    { name: 'Brasil Sul', logo: 'assets/brasilsul.png' },
+    { name: 'Catarinense', logo: 'assets/catarinense.png' }
 ];
 
 const DESTINATION_OFFERS_1 = [
