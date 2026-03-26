@@ -611,10 +611,9 @@ body {
 
 /* ─── App Section ────────────────────────────────────────────────────────────── */
 .app-section {
-    background: var(--bg-dark) url('assets/banner-app.png') no-repeat top center / cover;
+    background: var(--bg-dark) url('assets/banner-app.png') no-repeat center bottom / cover;
     color: #fff;
-    padding: 5rem 0;
-    margin-top: 3rem;
+    padding: 56px 0;
 }
 
 .app-badge {
