@@ -3,133 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reserva de Passagens - Wireframe</title>
+    <title>togo - Reserva de Passagens</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
 </head>
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                Klassen
-            </a>
-            <div class="d-flex">
-                <span class="me-3 d-none d-md-inline text-muted small">Menu Item</span>
-                <div style="width: 30px; height: 30px; background: #ccc; border-radius: 50%;"></div>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="logo-container">
+                <img src="assets/logo.png" alt="togo" style="height: 45px;">
+            </div>
+            
+            <div class="d-none d-lg-flex align-items-center">
+                <a href="#" class="nav-link-custom">Points2Go</a>
+                <a href="#" class="nav-link-custom">Ofertas</a>
+                <a href="#" class="nav-link-custom">Pedidos</a>
+                <a href="#" class="nav-link-custom">Ajuda</a>
+                <button class="btn btn-login ms-4">login</button>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <header class="hero">
-        <div class="container text-center">
-            <h1 class="display-5 fw-bold mb-2">Busca de Passagens</h1>
-            <p class="text-muted">Selecione origem, destino e data para continuar</p>
-        </div>
+       
     </header>
 
     <!-- Search Section -->
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-12 search-container">
-                <form id="search-form" class="row g-3">
-                    <div class="col-md-2">
-                        <label class="form-label small fw-bold">Motivo da Viagem</label>
-                        <select class="form-select" id="travel-purpose">
-                            <option value="lazer">Lazer</option>
-                            <option value="trabalho">Trabalho</option>
+        <div class="search-container">
+            <form id="search-form" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold ps-2">Origem</label>
+                    <div class="input-group-custom">
+                        <i class="bi bi-geo-alt"></i>
+                        <select class="form-select border-0 bg-transparent" id="origin" required>
+                            <option value="Londrina, PR">Londrina, PR</option>
+                            <option value="São Paulo, SP">São Paulo, SP</option>
+                            <option value="Rio de Janeiro, RJ" selected>Rio de Janeiro, RJ</option>
+                            <option value="Curitiba, PR">Curitiba, PR</option>
                         </select>
                     </div>
-                    <div class="col-md-2">
-                        <label class="form-label small fw-bold">Origem</label>
-                        <select class="form-select" id="origin" required>
-                            <option value="São Paulo, SP">São Paulo, SP</option>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold ps-2">Destino</label>
+                    <div class="input-group-custom">
+                        <i class="bi bi-geo-alt"></i>
+                        <select class="form-select border-0 bg-transparent" id="destination" required>
+                            <option value="São Paulo, SP" selected>São Paulo, SP</option>
                             <option value="Rio de Janeiro, RJ">Rio de Janeiro, RJ</option>
                             <option value="Londrina, PR">Londrina, PR</option>
                             <option value="Curitiba, PR">Curitiba, PR</option>
-                            <option value="Belo Horizonte, MG">Belo Horizonte, MG</option>
-                            <option value="Brasília, DF">Brasília, DF</option>
-                            <option value="Salvador, BA">Salvador, BA</option>
-                            <option value="Florianópolis, SC">Florianópolis, SC</option>
-                            <option value="Porto Alegre, RS">Porto Alegre, RS</option>
                         </select>
                     </div>
-                    <div class="col-md-2">
-                        <label class="form-label small fw-bold">Destino</label>
-                        <select class="form-select" id="destination" required>
-                            <option value="São Paulo, SP">São Paulo, SP</option>
-                            <option value="Rio de Janeiro, RJ">Rio de Janeiro, RJ</option>
-                            <option value="Londrina, PR">Londrina, PR</option>
-                            <option value="Curitiba, PR">Curitiba, PR</option>
-                            <option value="Belo Horizonte, MG">Belo Horizonte, MG</option>
-                            <option value="Brasília, DF">Brasília, DF</option>
-                            <option value="Salvador, BA">Salvador, BA</option>
-                            <option value="Florianópolis, SC">Florianópolis, SC</option>
-                            <option value="Porto Alegre, RS">Porto Alegre, RS</option>
-                        </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold ps-2">Data da Ida</label>
+                    <div class="input-group-custom">
+                        <i class="bi bi-calendar3"></i>
+                        <input type="text" class="form-control border-0 bg-transparent" id="travel-date" placeholder="DD/MM/AAAA" required>
                     </div>
-                    <div class="col-md-3">
-                        <label class="form-label small fw-bold">Data da Ida</label>
-                        <input type="date" class="form-control" id="travel-date" required>
-                    </div>
-                    <div class="col-md-2 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary w-100">
-                            BUSCAR
-                        </button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-search py-3">
+                        BUSCAR AGORA
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <!-- Results Section -->
-    <main id="view-results" class="results-section container">
+    <!-- Results Section (Viações) -->
+    <main id="view-results" class="results-section container mt-4" style="display: none;">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 id="results-title" class="fw-bold m-0">Passagens Disponíveis</h2>
+            <h2 id="results-title" class="fw-bold m-0 h4">Passagens Disponíveis</h2>
             <span class="text-muted" id="results-date"></span>
         </div>
         <div id="trips-container">
-            <!-- Dynamic cards will appear here -->
+            <!-- Dynamic cards from bus search will appear here -->
         </div>
     </main>
 
-    <section id="view-seats" class="seat-section container">
+    <!-- Featured Offers - Line 1 -->
+    <section id="featured-offers-1" class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold h4">Melhores ofertas to go</h2>
+            <a href="#" class="btn btn-outline-dark rounded-pill btn-sm px-3">ver todas</a>
+        </div>
+        <div id="offers-grid-1" class="row g-4">
+            <!-- Featured offers will be injected here by JS -->
+        </div>
+    </section>
+
+    <!-- Featured Offers - Line 2 -->
+    <section id="featured-offers-2" class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold h4">Explore novos destinos</h2>
+            <a href="#" class="btn btn-outline-dark rounded-pill btn-sm px-3">ver todas</a>
+        </div>
+        <div id="offers-grid-2" class="row g-4">
+            <!-- Featured offers will be injected here by JS -->
+        </div>
+    </section>
+
+    <!-- Seat Selection -->
+    <section id="view-seats" class="seat-section container py-5" style="display:none;">
         <div class="row">
             <div class="col-md-8">
-                <div class="card p-4 mb-4">
+                <div class="card p-4 mb-4 border-0 shadow-sm" style="border-radius: 20px;">
                     <h5 class="fw-bold mb-4">Seleção de Assento</h5>
-                    
-                    <div class="bus-layout">
-                        <div class="me-3 small text-muted text-center" style="writing-mode: vertical-lr; transform: rotate(180deg);">[FRENTE]</div>
+                    <div class="bus-layout p-4">
                         <div class="seat-grid" id="seat-grid">
                             <!-- Seats generated by JS -->
                         </div>
                     </div>
-
-                    <div class="seat-legend">
-                        <div class="legend-item">
-                            <div class="seat available" style="width:20px;height:20px"></div>
-                            <span>Livre</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="seat selected" style="width:20px;height:20px"></div>
-                            <span>Selecionada</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="seat occupied" style="width:20px;height:20px"></div>
-                            <span>Ocupada</span>
-                        </div>
+                    <div class="seat-legend mt-4">
+                        <div class="legend-item"><div class="seat available" style="width:20px;height:20px"></div> <span>Livre</span></div>
+                        <div class="legend-item"><div class="seat selected" style="width:20px;height:20px"></div> <span>Sua escolha</span></div>
+                        <div class="legend-item"><div class="seat occupied" style="width:20px;height:20px"></div> <span>Ocupado</span></div>
                     </div>
                 </div>
             </div>
-            
             <div class="col-md-4">
-                <div class="card border-0 shadow-sm p-4 sticky-top" style="top: 20px;">
-                    <h4 class="fw-bold mb-3">Resumo da Viagem</h4>
+                <div class="card border-0 shadow-sm p-4 sticky-top" style="top: 20px; border-radius: 20px;">
+                    <h4 class="fw-bold mb-3">Resumo</h4>
                     <div id="selection-summary">
                         <p class="text-muted small">Nenhuma poltrona selecionada</p>
                     </div>
@@ -138,33 +138,33 @@
                         <span>Total:</span>
                         <span id="total-price">R$ 0,00</span>
                     </div>
-                    <button class="btn btn-accent w-100 py-3 d-none" id="btn-continue-passengers">
-                        CONTINUAR PARA PASSAGEIROS
+                    <button class="btn btn-search w-100 py-3 d-none" id="btn-continue-passengers">
+                        CONTINUAR
                     </button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Passenger Details Section -->
-    <section id="view-passengers" class="seat-section container">
+    <!-- Passenger Details -->
+    <section id="view-passengers" class="seat-section container py-5" style="display:none;">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card p-4 mb-4">
+                <div class="card p-4 mb-4 border-0 shadow-sm" style="border-radius: 20px;">
                     <h5 class="fw-bold mb-4">Dados dos Passageiros</h5>
                     <form id="passenger-form">
                         <div id="passenger-forms-container">
                             <!-- Forms generated by JS -->
                         </div>
                         <div class="d-flex justify-content-between mt-4">
-                            <button type="button" class="btn btn-outline-secondary" onclick="showSeatsView(selectedTrip.id)">Voltar aos Assentos</button>
-                            <button type="submit" class="btn btn-primary">FINALIZAR RESERVA</button>
+                            <button type="button" class="btn btn-outline-dark rounded-pill px-4" onclick="location.reload()">Cancelar</button>
+                            <button type="submit" class="btn btn-search w-auto px-5">FINALIZAR RESERVA</button>
                         </div>
                     </form>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card p-4 sticky-top" style="top: 20px;">
+                <div class="card p-4 border-0 shadow-sm sticky-top" style="top: 20px; border-radius: 20px;">
                     <h5 class="fw-bold mb-3">Resumo Final</h5>
                     <div id="final-summary">
                         <!-- Summary generated by JS -->
@@ -174,21 +174,41 @@
         </div>
     </section>
 
+    <!-- App Promo Section (Keeping as it was a part of the design) -->
+    <section class="app-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <span class="app-badge">Points 2 go</span>
+                    <h2 class="app-title">No app você tem <br><span>Condições Exclusivas</span></h2>
+                    <p class="app-subtitle">E seus pontos valem mais.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-5 bg-white text-center">
+        <div class="logo-container justify-content-center">
+            <img src="assets/logo.png" alt="togo" style="height: 40px;">
+        </div>
+    </footer>
+
     <!-- Checkout Success Modal -->
     <div class="modal fade" id="checkoutModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 wf-box shadow-lg">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 30px;">
                 <div class="modal-body text-center p-5">
-                    <div class="display-1 text-success mb-4"><i class="bi bi-check-circle"></i></div>
+                    <div class="display-1 text-success mb-4"><i class="bi bi-check-circle-fill"></i></div>
                     <h2 class="fw-bold mb-3">Reserva Confirmada!</h2>
-                    <p class="text-muted mb-4">Sua passagem foi reservada com sucesso. Os detalhes foram enviados para o seu e-mail.</p>
-                    <button type="button" class="btn btn-primary px-5 py-3" onclick="location.reload()">NOVA BUSCA</button>
+                    <p class="text-muted mb-4">Sua passagem foi reservada com sucesso.</p>
+                    <button type="button" class="btn btn-search px-5" onclick="location.reload()">NOVA BUSCA</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

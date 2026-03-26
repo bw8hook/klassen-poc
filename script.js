@@ -5,6 +5,18 @@ const OPERATORS = [
     { name: 'Catarinense', logo: 'assets/catarinense.png' }
 ];
 
+const DESTINATION_OFFERS_1 = [
+    { destination: 'Miami | USA', origin: 'Londrina', price: 8888.88, img: 'https://images.unsplash.com/photo-1514214246283-d427a95c5d2f?auto=format&fit=crop&w=800&q=80', badge: 'Acumule 2GOs em dobro' },
+    { destination: 'São Paulo | SP', origin: 'Londrina', price: 888.88, img: 'https://images.unsplash.com/photo-1543059152-42b40fc24fae?auto=format&fit=crop&w=800&q=80' },
+    { destination: 'Belo Horizonte', origin: 'Londrina', price: 888.88, img: 'https://images.unsplash.com/photo-1596438459194-f275f4633203?auto=format&fit=crop&w=800&q=80' }
+];
+
+const DESTINATION_OFFERS_2 = [
+    { destination: 'Madrid | ESP', origin: 'Londrina', price: 8888.88, img: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=800&q=80' },
+    { destination: 'Porto Alegre | RS', origin: 'Londrina', price: 888.88, img: 'https://images.unsplash.com/photo-1628153372217-19d6756289b4?auto=format&fit=crop&w=800&q=80' },
+    { destination: 'Las Vegas | USA', origin: 'Londrina', price: 8888.88, img: 'https://images.unsplash.com/photo-1581351123004-757df051db8e?auto=format&fit=crop&w=800&q=80' }
+];
+
 const TYPES = ['Convencional', 'Semi-Leito', 'Leito', 'Leito Total'];
 
 // Generate 24 trips (database)
@@ -36,6 +48,10 @@ let currentResults = [];
 // DOM Elements
 const searchForm = document.getElementById('search-form');
 const resultsView = document.getElementById('view-results');
+const offersSection1 = document.getElementById('featured-offers-1');
+const offersSection2 = document.getElementById('featured-offers-2');
+const offersGrid1 = document.getElementById('offers-grid-1');
+const offersGrid2 = document.getElementById('offers-grid-2');
 const seatsView = document.getElementById('view-seats');
 const tripsContainer = document.getElementById('trips-container');
 const seatGrid = document.getElementById('seat-grid');
@@ -50,80 +66,103 @@ const finalSummary = document.getElementById('final-summary');
 // Initialize
 function init() {
     console.log('Initializing application...');
-    console.log('TRIP_DATABASE ready with', TRIP_DATABASE.length, 'trips.');
-
-    const originField = document.getElementById('origin');
-    const destField = document.getElementById('destination');
+    
     const dateField = document.getElementById('travel-date');
+    if (dateField) {
+        new Cleave(dateField, {
+            date: true,
+            delimiter: '/',
+            datePattern: ['d', 'm', 'Y']
+        });
+        dateField.value = '25/03/2026';
+    }
 
-    const origin = 'Londrina, PR';
-    const dest = 'São Paulo, SP';
-    const date = new Date().toISOString().split('T')[0];
+    renderFeaturedOffers();
+}
 
-    if (originField) originField.value = origin;
-    if (destField) destField.value = dest;
-    if (dateField) dateField.value = date;
+function renderFeaturedOffers() {
+    if (offersGrid1) {
+        offersGrid1.innerHTML = DESTINATION_OFFERS_1.map(offer => createOfferCard(offer)).join('');
+    }
+    if (offersGrid2) {
+        offersGrid2.innerHTML = DESTINATION_OFFERS_2.map(offer => createOfferCard(offer)).join('');
+    }
+}
 
-    const resultsTitle = document.getElementById('results-title');
-    const resultsDate = document.getElementById('results-date');
-
-    if (resultsTitle) resultsTitle.innerText = `${origin} para ${dest}`;
-    if (resultsDate) resultsDate.innerText = new Date(date).toLocaleDateString('pt-BR');
-
-    // Pick initial 5 random trips
-    shuffleAndPickTrips();
-    console.log('Trips picked:', currentResults.length);
-    renderTrips();
-    console.log('Application initialized.');
+function createOfferCard(offer) {
+    return `
+        <div class="col-md-4">
+            <div class="card offer-card h-100 border-0 shadow-sm">
+                <div class="offer-img-container" style="height: 180px; position: relative; overflow: hidden; border-radius: 20px 20px 0 0;">
+                    <img src="${offer.img}" class="w-100 h-100 object-fit-cover">
+                    ${offer.badge ? `<div style="position: absolute; top: 12px; left: 12px; background: var(--primary-green); padding: 4px 12px; border-radius: 50px; font-weight: 700; font-size: 0.7rem; transform: rotate(-5deg);">${offer.badge}</div>` : ''}
+                </div>
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between mb-3">
+                        <div>
+                            <div class="text-muted small mb-1"><i class="bi bi-suitcase-fill me-1"></i> ${offer.origin}</div>
+                            <div class="fw-bold fs-5">${offer.destination}</div>
+                        </div>
+                        <div class="text-end">
+                            <div class="text-muted small">a partir de</div>
+                            <div class="fw-bold text-success fs-5">R$ ${offer.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary w-100 rounded-pill py-2" onclick="alert('Funcionalidade indisponível nesta POC')">RESERVAR AGORA</button>
+                </div>
+            </div>
+        </div>
+    `;
 }
 
 window.addEventListener('DOMContentLoaded', init);
 
 // Event Listeners
-searchForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const origin = document.getElementById('origin').value;
-    const dest = document.getElementById('destination').value;
-    const date = document.getElementById('travel-date').value;
-
-    document.getElementById('results-title').innerText = `${origin} para ${dest}`;
-    document.getElementById('results-date').innerText = new Date(date).toLocaleDateString('pt-BR');
-
-    shuffleAndPickTrips();
-    showResultsView();
-});
+if (searchForm) {
+    searchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const origin = document.getElementById('origin').value;
+        const dest = document.getElementById('destination').value;
+        const resultsTitle = document.getElementById('results-title');
+        if (resultsTitle) resultsTitle.innerText = `${origin} para ${dest}`;
+        
+        shuffleAndPickTrips();
+        if (resultsView) {
+            resultsView.style.display = 'block';
+            renderTrips();
+            window.scrollTo({ top: resultsView.offsetTop - 100, behavior: 'smooth' });
+        }
+    });
+}
 
 function shuffleAndPickTrips() {
-    // Shuffle database and take first 5
     currentResults = [...TRIP_DATABASE]
         .sort(() => Math.random() - 0.5)
         .slice(0, 5)
-        .sort((a, b) => a.departure.localeCompare(b.departure)); // Sort by time for better UX
+        .sort((a, b) => a.departure.localeCompare(b.departure));
 }
 
-continuePassengersBtn.addEventListener('click', showPassengersView);
+if (continuePassengersBtn) continuePassengersBtn.addEventListener('click', showPassengersView);
 
-passengerForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const modal = new bootstrap.Modal(document.getElementById('checkoutModal'));
-    modal.show();
-});
-
-function showResultsView() {
-    seatsView.style.display = 'none';
-    passengersView.style.display = 'none';
-    resultsView.style.display = 'block';
-
-    renderTrips();
-    window.scrollTo({ top: resultsView.offsetTop - 50, behavior: 'smooth' });
+if (passengerForm) {
+    passengerForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const modalEl = document.getElementById('checkoutModal');
+        if (modalEl) {
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
+        }
+    });
 }
 
 function showSeatsView(tripId) {
     selectedTrip = TRIP_DATABASE.find(t => t.id === tripId);
     selectedSeats = [];
 
-    resultsView.style.display = 'none';
-    passengersView.style.display = 'none';
+    if (resultsView) resultsView.style.display = 'none';
+    if (offersSection1) offersSection1.style.display = 'none';
+    if (offersSection2) offersSection2.style.display = 'none';
+    if (passengersView) passengersView.style.display = 'none';
     seatsView.style.display = 'block';
 
     renderSeats();
@@ -133,7 +172,9 @@ function showSeatsView(tripId) {
 
 function showPassengersView() {
     seatsView.style.display = 'none';
-    resultsView.style.display = 'none';
+    if (resultsView) resultsView.style.display = 'none';
+    if (offersSection1) offersSection1.style.display = 'none';
+    if (offersSection2) offersSection2.style.display = 'none';
     passengersView.style.display = 'block';
 
     renderPassengerForms();
@@ -143,7 +184,7 @@ function showPassengersView() {
 
 function renderPassengerForms() {
     passengerFormsContainer.innerHTML = selectedSeats.map((seatId, index) => `
-        <div class="wf-box p-3 mb-3">
+        <div class="card p-3 mb-3 border-0 shadow-sm" style="border-radius: 15px;">
             <h6 class="fw-bold mb-3">Passageiro ${index + 1} (Assento ${seatId})</h6>
             <div class="row g-3">
                 <div class="col-md-8">
@@ -158,7 +199,6 @@ function renderPassengerForms() {
         </div>
     `).join('');
 
-    // Initialize masks for all new inputs
     document.querySelectorAll('.cpf-mask').forEach(input => {
         new Cleave(input, {
             delimiters: ['.', '.', '-'],
@@ -169,44 +209,48 @@ function renderPassengerForms() {
 }
 
 function updateFinalSummary() {
+    if (!selectedTrip) return;
     const total = selectedSeats.length * selectedTrip.price;
-    finalSummary.innerHTML = `
-        <div class="small">
-            <p class="mb-1"><strong>Trecho:</strong> ${selectedTrip.departure} → ${selectedTrip.arrival}</p>
-            <p class="mb-1"><strong>Empresa:</strong> ${selectedTrip.operator}</p>
-            <p class="mb-1"><strong>Assentos:</strong> ${selectedSeats.join(', ')}</p>
-            <hr>
-            <p class="fs-5 fw-bold text-end">Total: R$ ${total.toFixed(2)}</p>
-        </div>
-    `;
+    if (finalSummary) {
+        finalSummary.innerHTML = `
+            <div class="small">
+                <p class="mb-1"><strong>Trecho:</strong> ${selectedTrip.departure} → ${selectedTrip.arrival}</p>
+                <p class="mb-1"><strong>Empresa:</strong> ${selectedTrip.operator}</p>
+                <p class="mb-1"><strong>Assentos:</strong> ${selectedSeats.join(', ')}</p>
+                <hr>
+                <p class="fs-5 fw-bold text-end">Total: R$ ${total.toFixed(2)}</p>
+            </div>
+        `;
+    }
 }
 
 function renderTrips() {
+    if (!tripsContainer) return;
     tripsContainer.innerHTML = currentResults.map(trip => `
-        <div class="card trip-card p-3 p-md-4">
+        <div class="card trip-card p-3 p-md-4 mb-3 border-0 shadow-sm" style="border-radius: 20px;">
             <div class="row align-items-center">
                 <div class="col-md-3 text-center mb-3 mb-md-0">
-                    <div class="wf-box p-3 d-flex align-items-center justify-content-center" style="height: 100px;">
-                        <img src="${trip.logo}" alt="${trip.operator}" style="max-height: 100%; max-width: 100%; object-fit: contain; filter: grayscale(100%);">
+                    <div class="p-2 d-flex align-items-center justify-content-center" style="height: 80px; background: #f8f9fa; border-radius: 12px;">
+                        <img src="${trip.logo}" alt="${trip.operator}" style="max-height: 100%; max-width: 100%; object-fit: contain; filter: grayscale(100%); opacity: 0.7;">
                     </div>
                 </div>
-                <div class="col-md-2 border-start-md ps-md-4">
+                <div class="col-md-2 ps-md-4">
                     <div class="fw-bold fs-4">${trip.departure}</div>
                     <div class="text-muted small">Partida</div>
                     <div class="mt-2 fw-medium text-dark small">${trip.type}</div>
                 </div>
-                <div class="col-md-3 border-start">
+                <div class="col-md-3">
                     <div class="fw-bold fs-4">${trip.arrival}</div>
                     <div class="text-muted small">Chegada</div>
                     <div class="text-muted small mt-2">${trip.duration}</div>
                 </div>
-                <div class="col-md-2 border-start text-center">
+                <div class="col-md-2 text-center">
                     <div class="text-muted mb-1 small">A partir de</div>
                     <div class="fw-bold fs-4">R$ ${trip.price.toFixed(2)}</div>
                     <div class="small text-danger">${trip.seatsLeft} poltronas</div>
                 </div>
                 <div class="col-md-2 text-end">
-                    <button class="btn btn-primary w-100 py-2" onclick="showSeatsView(${trip.id})">
+                    <button class="btn btn-primary w-100 py-2 rounded-pill" onclick="showSeatsView(${trip.id})">
                         SELECIONAR
                     </button>
                 </div>
@@ -218,7 +262,7 @@ function renderTrips() {
 function renderSeats() {
     seatGrid.innerHTML = '';
     const totalSeats = 40;
-    const occupiedSeats = [3, 4, 11, 12, 18, 25, 33]; // Sample constant for demo
+    const occupiedSeats = [3, 4, 11, 12, 18, 25, 33];
 
     for (let i = 1; i <= totalSeats; i++) {
         const isOccupied = occupiedSeats.includes(i);
@@ -228,11 +272,6 @@ function renderSeats() {
 
         if (!isOccupied) {
             seat.addEventListener('click', () => toggleSeat(i, seat));
-        }
-
-        // Add gap for the aisle
-        if (i % 4 == 0) {
-            // After every 4 seats (2 left, 2 right pattern logic)
         }
 
         seatGrid.appendChild(seat);
@@ -262,13 +301,8 @@ function updateSummary() {
                 <strong>Serviço:</strong> ${selectedTrip.type}<br>
                 <strong>Assentos:</strong> ${selectedSeats.sort((a, b) => a - b).join(', ')}
             </div>
-            <div class="alert alert-secondary p-2 small">
-                Reserva temporária ativa.
-            </div>
         `;
         totalPriceEl.innerText = `R$ ${total.toFixed(2)}`;
         continuePassengersBtn.classList.remove('d-none');
     }
 }
-
-// Final logic handled in passengerForm submit listener
