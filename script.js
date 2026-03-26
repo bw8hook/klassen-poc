@@ -7,15 +7,15 @@ const OPERATORS = [
 ];
 
 const DESTINATION_OFFERS_1 = [
-    { destination: 'Miami | USA', origin: 'Londrina', price: 8888.88, img: 'https://images.unsplash.com/photo-1514214246283-d427a95c5d2f?auto=format&fit=crop&w=800&q=80', badge: 'Acumule 2GOs em dobro' },
-    { destination: 'São Paulo | SP', origin: 'Londrina', price: 88.88, img: 'https://images.unsplash.com/photo-1543059152-42b40fc24fae?auto=format&fit=crop&w=800&q=80' },
-    { destination: 'Belo Horizonte', origin: 'Londrina', price: 128.00, img: 'https://images.unsplash.com/photo-1596438459194-f275f4633203?auto=format&fit=crop&w=800&q=80' }
+    { destination: 'Miami | USA', origin: 'Londrina', price: 8888.88, img: 'imagens/miami.jpg', badge: 'Acumule 2GOs em dobro' },
+    { destination: 'São Paulo | SP', origin: 'Londrina', price: 88.88, img: 'imagens/sao-paulo.jpg' },
+    { destination: 'Belo Horizonte', origin: 'Londrina', price: 128.00, img: 'imagens/belo-horizonte.jpg' }
 ];
 
 const DESTINATION_OFFERS_2 = [
-    { destination: 'Madrid | ESP', origin: 'Londrina', price: 9999.00, img: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=800&q=80' },
-    { destination: 'Porto Alegre | RS', origin: 'Londrina', price: 145.00, img: 'https://images.unsplash.com/photo-1628153372217-19d6756289b4?auto=format&fit=crop&w=800&q=80' },
-    { destination: 'Las Vegas | USA', origin: 'Londrina', price: 11200.00, img: 'https://images.unsplash.com/photo-1581351123004-757df051db8e?auto=format&fit=crop&w=800&q=80' }
+    { destination: 'Madrid | ESP', origin: 'Londrina', price: 9999.00, img: 'imagens/madrid.jpg' },
+    { destination: 'Porto Alegre | RS', origin: 'Londrina', price: 145.00, img: 'imagens/porto-alegre.jpg' },
+    { destination: 'Las Vegas | USA', origin: 'Londrina', price: 11200.00, img: 'imagens/las-vegas.jpg' }
 ];
 
 const TYPES = ['Convencional', 'Semi-Leito', 'Leito', 'Leito Total'];
@@ -69,17 +69,6 @@ const finalSummary      = document.getElementById('final-summary');
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
 
-function handleScroll() {
-    const navbar = document.querySelector('.navbar');
-    if (navbar) {
-        if (window.scrollY > 150) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    }
-}
-
 function init() {
     const dateField = document.getElementById('travel-date');
     if (dateField && typeof Cleave !== 'undefined') {
@@ -92,8 +81,6 @@ function init() {
     if (searchBtn) searchBtn.addEventListener('click', handleSearch);
     if (continueBtn) continueBtn.addEventListener('click', showPassengersView);
     if (passengerForm) passengerForm.addEventListener('submit', handleFormSubmit);
-
-    window.addEventListener('scroll', handleScroll);
 }
 
 window.addEventListener('DOMContentLoaded', init);
