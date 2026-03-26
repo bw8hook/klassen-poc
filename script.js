@@ -69,6 +69,17 @@ const finalSummary      = document.getElementById('final-summary');
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
 
+function handleScroll() {
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        if (window.scrollY > 150) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    }
+}
+
 function init() {
     const dateField = document.getElementById('travel-date');
     if (dateField && typeof Cleave !== 'undefined') {
@@ -81,6 +92,8 @@ function init() {
     if (searchBtn) searchBtn.addEventListener('click', handleSearch);
     if (continueBtn) continueBtn.addEventListener('click', showPassengersView);
     if (passengerForm) passengerForm.addEventListener('submit', handleFormSubmit);
+
+    window.addEventListener('scroll', handleScroll);
 }
 
 window.addEventListener('DOMContentLoaded', init);
